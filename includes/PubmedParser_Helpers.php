@@ -30,16 +30,22 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 class Helpers
 {
 	public static function FetchRemote($uri, &$result) {
+		global $wgPubmedParserProxy;
 		try {
-			$result = file_get_contents( $uri );
+			$opts = array(
+			  'http' => array(
+				  'proxy' => 'tcp://' . $wgPubmedParserProxy,
+				  'request_fulluri' => true,
+				  ),
+				 );
+			$context = stream_context_create($opts);
+		  $result = file_get_contents( $uri, false, $context );
 		}
 		catch (Exception $e) {
 			try {
 				$curl = curl_init( $uri );
-        curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
-        if($wgPubmedParserProxy ) {
-          curl_setopt( $curl, CURLOPT_PROXY, $wgPubmedParserProxy )
-        }
+				curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
+				curl_setopt( $curl, CURLOPT_PROXY, 'http://' . $wgPubmedParserProxy);
 				$result = curl_exec( $curl );
 				curl_close( $curl );
 			}
