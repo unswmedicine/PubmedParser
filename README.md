@@ -1,30 +1,37 @@
 PubmedParser extension for MediaWiki
 ====================================
 
-This is an extension for the [MediaWiki](https://www.mediawiki.org) wiki 
-software that facilitates retrieval and display of scientific citations 
+This is an extension for the [MediaWiki](https://www.mediawiki.org) wiki
+software that facilitates retrieval and display of scientific citations
 from [Pubmed](https://pubmed.gov).
 
-For installation and usage instructions, please see: 
+For installation and usage instructions, please see:
 <https://www.mediawiki.org/wiki/Extension:PubmedParser>
 
 
 ## Upgrading from previous versions of this extension (< 4)
 
-The 4.x series finally respects the database prefix settings for the 'Pubmed' 
-caching table. Before upgrading the database (`php maintenance/update.php`), 
-you may want to manually rename any existing Pubmed caching table with your 
+The 4.x series finally respects the database prefix settings for the 'Pubmed'
+caching table. Before upgrading the database (`php maintenance/update.php`),
+you may want to manually rename any existing Pubmed caching table with your
 custom prefix:
 
         RENAME TABLE Pubmed TO <YourPrefix>Pubmed;
 
 (Or use your GUI/web UI of choice, e.g. phpMyAdmin.)
 
-Of course this is only necessary if you to use table prefixes, i.e. you have a 
-line `$wgDBPrefix = '<YourPrefix>';` in your `LocalSettings.php`. Caveat: Don't 
-change this MediaWiki setting after installation; otherwise, you'll need to 
+Of course this is only necessary if you to use table prefixes, i.e. you have a
+line `$wgDBPrefix = '<YourPrefix>';` in your `LocalSettings.php`. Caveat: Don't
+change this MediaWiki setting after installation; otherwise, you'll need to
 manually rename all your database tables!
 
+## LocalSettings.php
+
+LocalSettings.php:
+```
+// If needed set a proxy https://curl.haxx.se/libcurl/c/CURLOPT_PROXY.html
+$wgPubmedParserProxy = 'http://my.proxy.server:8080'
+```
 
 ## License
 
