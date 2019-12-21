@@ -2,7 +2,7 @@
 /*
  *      \file PubmedParser_Extension.php
  *
- *      Copyright 2011-2017 Daniel Kraus <bovender@bovender.de>
+ *      Copyright 2011-2019 Daniel Kraus <bovender@bovender.de>
  *
  *      This program is free software; you can redistribute it and/or modify
  *      it under the terms of the GNU General Public License as published by
@@ -47,7 +47,6 @@ class Extension {
 			define( 'PUBMEDPARSER_INVALIDXML',     6); ///< Status code: Invalid XML data received
 			define( 'PUBMEDPARSER_TEMPLATECHAR',   '#'); ///< Indicates template name parameter
 		}
-		self::loadMessages();
 		return true;
 	}
 
@@ -63,8 +62,10 @@ class Extension {
 	 * strings downloaded from pubmed.gov.
 	 */
 	public static function createTable( \DatabaseUpdater $updater ) {
+		global $wgDBtype;
+		$dbTag = $wgDBtype == 'postgres' ? '_Postgres' : '';
 		$updater->addExtensionTable( 'Pubmed',
-			__DIR__ . '/../db/PubmedParser_Migration.sql', true );
+			__DIR__ . '/../db/PubmedParser' . $dbTag . '_Migration.sql', true );
 		return true;
 	}
 
@@ -72,6 +73,7 @@ class Extension {
 	 * Static function that is hooked to the 'pmid' magic hook.
 	 */
 	public static function render( &$parser, $param1 = '', $param2 = '', $param3 = '' ) {
+		if ( ! is_string( self::$authors ) ) self::loadMessages();
 		$core = new Core( $param1, $param2, $param3 );
 		return $core->execute();
 	}

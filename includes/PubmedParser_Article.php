@@ -2,7 +2,7 @@
 /*
  *      \file PubmedParser.Article.php
  *      
- *      Copyright 2011-2017 Daniel Kraus <krada@gmx.net>
+ *      Copyright 2011-2019 Daniel Kraus <krada@gmx.net>
  *      
  *      This program is free software; you can redistribute it and/or modify
  *      it under the terms of the GNU General Public License as published by
@@ -57,6 +57,10 @@ class Article
 			$this->xml = false;
 			$this->message = $e->getMessage();
 		}
+	}
+
+	public function hasTitle() {
+		return is_string( $this->title ) && \strlen( $this->title ) > 0;
 	}
 
 	/** Parses Pubmed XML
@@ -161,7 +165,7 @@ class Article
 			$a = $this->authorName( 0, $useInitials );
 			if ( $numAuthors > 2 ) {
 				$a .= " " . Extension::$etAl;
-			} elseif ( $numAuthors = 2 ) {
+			} elseif ( $numAuthors == 2 ) {
 				$a .= ' ' . Extension::$and .  ' '	. $this->authorName( 1, $useInitials );
 			}
 			return $a;
@@ -184,7 +188,7 @@ class Article
 			// the last author's name.
 			$a = substr( $a, 0, strlen( $a )-2 ) . ' ' . Extension::$and 
 				. ' ' . $this->authorName( $i, $useInitials );
-		} elseif ( $numAuthors = 1 ) {
+		} elseif ( $numAuthors == 1 ) {
 			$a = $this->authorName( 0, $useInitials );
 		} else {
 			$a = $this->collectiveName;

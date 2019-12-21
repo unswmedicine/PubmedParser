@@ -37,7 +37,7 @@ $wgPubmedParserProxy = 'http://my.proxy.server:8080'
 
 PubmedParser
 
-Copyright (C) 2011-2017 Daniel Kraus ([bovender](https://www.bovender.de))
+Copyright (C) 2011-2019 Daniel Kraus ([bovender](https://www.bovender.de))
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
